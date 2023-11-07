@@ -16,7 +16,7 @@ export function isDate(date: any): boolean {
 }
 
 /**
- * @desc return if the two dates same
+ * @desc return if first date value is the same as the second one
  * @param {Time} first compared date
  * @param {Time} second compared date
  * @returns {Boolean}

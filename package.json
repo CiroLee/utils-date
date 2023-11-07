@@ -1,6 +1,6 @@
 {
   "name": "utils-date",
-  "version": "0.0.1-beta",
+  "version": "0.0.1",
   "description": "tiny and useful functions about date for frontend, written in typescript",
   "browser": "lib/index.mjs",
   "types": "lib/index.d.mts",
