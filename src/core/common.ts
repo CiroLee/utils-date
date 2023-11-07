@@ -1,7 +1,20 @@
+/**
+ * common module
+ * common operations about date
+ */
 import { DateFormatOption, Time, TimeUnit } from '@src/types';
 import { getType, zeroFill } from '@src/utils';
+import { toDate } from './transfer';
 import { TimeUintMap, weekMapEn, weekMapZh } from './constants';
+import { isDate } from './validator';
 
+/**
+ * @desc static class of week
+ * @method index return the week index for the specified date
+ * @method zh return the Chinese week word for the specified date
+ * @method en return the English week word for the specified date
+ * @method abbr return the English week abbreviation for the specified date
+ */
 export class Week {
   private static check(fnName: string, date?: Time): Date {
     if (date && !isDate(date)) {
@@ -46,37 +59,13 @@ export class Week {
     return weekMapEn[_date.getDay()].abbr;
   }
 }
-/**
- * @desc return if the date param is a valid Date
- * @param {any} date
- * @returns {Boolean}
- */
-export function isDate(date: any): boolean {
-  return !Number.isNaN(new Date(date).valueOf());
-}
-
-/**
- * @desc transfer a date param to Date if it is valid
- * @param {Time} date
- * @returns {Date}
- */
-export function toDate(date: Time): Date {
-  if (!isDate(date)) {
-    throw new Error('toDate: date is invalid, can not transfer to Date');
-  }
-  return new Date(date);
-}
 
 /**
  * @desc format date default format is yyyy-mm-dd HH:MM:SS, unix timestamp needs to be accurate to milliseconds
- * @param  {Date} date
+ * @param  {Time} date
  * @param  {string | DateFormatOption} [option] config option
  */
-export function dateFormat(date: Time, option?: string | DateFormatOption): string {
-  if (!isDate(date)) {
-    throw new Error('dateFormat: date is invalid');
-  }
-
+export function format(date: Time, option?: string | DateFormatOption): string {
   let _option = {
     format: 'yyyy-mm-dd HH:MM:SS',
     padZero: true,
@@ -84,7 +73,8 @@ export function dateFormat(date: Time, option?: string | DateFormatOption): stri
   if (typeof option === 'string') {
     _option.format = option;
   } else if (
-    (getType(option) === 'object', getType(option?.format) === 'string' || getType(option?.padZero) === 'boolean')
+    getType(option) === 'object' &&
+    (getType(option?.format) === 'string' || getType(option?.padZero) === 'boolean')
   ) {
     _option = {
       ..._option,
@@ -118,10 +108,7 @@ export function dateFormat(date: Time, option?: string | DateFormatOption): stri
  * @param {Number} amount operation value, integer is added, negative is subtracted
  * @param {TimeUnit} timeUnit unit
  */
-export function dateOffset(date: Time, amount: number, timeUnit: TimeUnit): Date {
-  if (!isDate(date)) {
-    throw new Error('dateOffset: date is invalid');
-  }
+export function offset(date: Time, amount: number, timeUnit: TimeUnit): Date {
   if (typeof amount !== 'number') {
     throw new Error('dateOffset: amount is invalid');
   }
@@ -131,63 +118,55 @@ export function dateOffset(date: Time, amount: number, timeUnit: TimeUnit): Date
   const _date = toDate(date);
   return new Date(_date.getTime() + amount * TimeUintMap[timeUnit]);
 }
-
+/**
+ * @desc return min date of the date array
+ * @param {Time[]} dates valid date array
+ * @returns {Date}
+ */
 export function min(dates: Time[]): Date {
   if (!Array.isArray(dates)) {
     throw new Error('min: dates must be an array');
   }
-  if (dates.some((d) => !isDate(d))) {
-    throw new Error('min: elements in dates must be valid date');
-  }
   const datesNum = dates.map((d) => toDate(d).getTime());
   return new Date(Math.min(...datesNum));
 }
-
+/**
+ * @desc return max date of the date array
+ * @param {Time[]} dates valid date array
+ * @returns {Date}
+ */
 export function max(dates: Time[]): Date {
   if (!Array.isArray(dates)) {
     throw new Error('max: dates must be an array');
-  }
-  if (dates.some((d) => !isDate(d))) {
-    throw new Error('max: elements in dates must be valid date');
   }
   const datesNum = dates.map((d) => toDate(d).getTime());
   return new Date(Math.max(...datesNum));
 }
 
 /**
- * @desc return if the two dates same
- * @param {Time} first compared date
- * @param {Time} second compared date
- * @returns {Boolean}
+ * @desc return the diff of two dates
+ * @param {Date} first
+ * @param {Date} second
+ * @param {TimeUnit} unit unit of diff,support year, month, week, day etc.
+ * @returns {Number}
  */
-export function isEqual(first: Time, second: Time): boolean {
-  if (!isDate(first) || !isDate(second)) {
-    throw new Error('equal: both first and second must be valid Date');
-  }
-  const firstDate = toDate(first);
-  const secondDate = toDate(first);
-  return firstDate.getTime() === secondDate.getTime();
-}
-/**
- * @desc return if first date is before second one
- * @param {Time} first first date to compare
- * @param {Time} second second date to compare
- * @returns {Boolean}
- */
-export function isBefore(first: Time, second: Time): boolean {
-  if (!isDate(first) || !isDate(second)) {
-    throw new Error('both first and second must be valid Date');
+export function diff(first: Time, second: Time, unit: TimeUnit): number {
+  if (!TimeUintMap[unit]) {
+    throw new Error('diff: invalid unit');
   }
   const firstDate = toDate(first);
   const secondDate = toDate(second);
-  return firstDate.getTime() < secondDate.getTime();
+  const diff = firstDate.getTime() - secondDate.getTime();
+  return Number(diff / TimeUintMap[unit]);
 }
 /**
- * @desc return if first date is after second one
- * @param {Time} first first date to compare
- * @param {Time} second second date to compare
- * @returns {Boolean}
+ * @desc return a cloned date
+ * @param {Date} date
+ * @returns {Date}
  */
-export function isAfter(first: Time, second: Time): boolean {
-  return !isBefore(first, second);
+export function clone(date: Date): Date {
+  if (getType(date) !== 'date') {
+    throw new Error('clone: date must be Date type');
+  }
+  return new Date(date.getTime());
 }

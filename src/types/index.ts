@@ -1,9 +1,16 @@
-import { TimeUintMap } from '@src/core/constants';
-
 export type Time = Date | string | number;
 export interface DateFormatOption {
   format?: string;
   padZero?: boolean;
 }
-
-export type TimeUnit = keyof typeof TimeUintMap;
+export interface DateObject {
+  year: number;
+  month: number;
+  week: number;
+  day: number;
+  hour: number;
+  minute: number;
+  second: number;
+  millisecond: number;
+}
+export type TimeUnit = keyof DateObject;
