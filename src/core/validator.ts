@@ -21,7 +21,7 @@ export function isDate(date: any): boolean {
  * @param {Time} second compared date
  * @returns {Boolean}
  */
-export function isEqual(first: Time, second: Time): boolean {
+export function isSame(first: Time, second: Time): boolean {
   const firstDate = toDate(first);
   const secondDate = toDate(second);
   return firstDate.getTime() === secondDate.getTime();
@@ -46,4 +46,15 @@ export function isBefore(first: Time, second: Time): boolean {
  */
 export function isAfter(first: Time, second: Time): boolean {
   return !isBefore(first, second);
+}
+
+/**
+ * @desc return if the year is leap
+ * @param {Number} year
+ */
+export function isLeap(year: number): boolean {
+  if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+    return true;
+  }
+  return false;
 }

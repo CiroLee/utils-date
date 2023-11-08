@@ -1,5 +1,5 @@
 import { toArray, toDate, toObject } from '@src/core/transfer';
-import { isEqual } from '@src/core/validator';
+import { isSame } from '@src/core/validator';
 const mockDate = new Date('2022-1-18 12:12:12'); // 星期二
 describe('toObject', () => {
   it('valid date, should return date object correctly', () => {
@@ -19,11 +19,11 @@ describe('toDate', () => {
   it('string type, should convert to Date correctly', () => {
     const param = '2022-1-18 12:12:12';
     const result = toDate(param);
-    expect(isEqual(mockDate, result)).toBeTruthy();
+    expect(isSame(mockDate, result)).toBeTruthy();
   });
   it('unix timestamp, should convert to Date correctly', () => {
     const result = toDate(1642479132000);
-    expect(isEqual(mockDate, result)).toBeTruthy();
+    expect(isSame(mockDate, result)).toBeTruthy();
   });
   it('Date type param, should return the same value', () => {
     const result = toDate(mockDate);

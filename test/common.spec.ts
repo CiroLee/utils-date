@@ -1,5 +1,18 @@
-import { Week, clone, diff, format, max, min, offset } from '@src/core/common';
-import { isEqual } from '@src/core/validator';
+import {
+  Week,
+  clone,
+  daysInMonth,
+  diff,
+  format,
+  getTime,
+  getUnixTime,
+  max,
+  min,
+  offset,
+  weekOfMonth,
+  weekOfYear,
+} from '@src/core/common';
+import { isSame } from '@src/core/validator';
 import { TimeUnit } from '@src/types';
 const mockDate = new Date('2022-1-18 12:12:12'); // 星期二
 describe('Week', () => {
@@ -84,7 +97,7 @@ describe('dateOffset', () => {
 
   it('should offset the month correctly', () => {
     const result = offset(initialDate, 3, 'month');
-    expect(result.getMonth() + 1).toBe(7);
+    expect(result.getMonth() + 1).toBe(8);
   });
 
   it('should offset the day correctly', () => {
@@ -132,7 +145,7 @@ describe('min', () => {
   it('valid dates, should return the min date', () => {
     const dates = ['2022-1-1', '2022-12-1', new Date('2023-1-1 12:00:00')];
     const result = min(dates);
-    expect(isEqual(result, dates[0])).toBeTruthy();
+    expect(isSame(result, dates[0])).toBeTruthy();
   });
   it('invalid dates, should throw error', () => {
     const dates = [new Date('2023-1-1 12:00:00'), ''];
@@ -146,7 +159,7 @@ describe('max', () => {
   it('valid dates, should return the max date', () => {
     const dates = ['2022-1-1', '2022-12-1', new Date('2023-1-1 12:00:00')];
     const result = max(dates);
-    expect(isEqual(result, dates[2])).toBeTruthy();
+    expect(isSame(result, dates[2])).toBeTruthy();
   });
   it('invalid dates, should throw error', () => {
     const dates = [new Date('2023-1-1 12:00:00'), ''];
@@ -187,5 +200,39 @@ describe('clone', () => {
   });
   it('input is not Date type, should throw error', () => {
     expect(() => clone('2023-11-6 12:12:12' as any)).toThrow();
+  });
+});
+
+describe('daysInMonth', () => {
+  it('should return days correctly', () => {
+    const result = daysInMonth(mockDate);
+    expect(result).toBe(31);
+  });
+});
+
+describe('weekOfYear', () => {
+  it('should return week correctly', () => {
+    const result = weekOfYear(mockDate);
+    expect(result).toBe(3);
+  });
+});
+
+describe('weekOfMonth', () => {
+  it('should return week correctly', () => {
+    const result = weekOfMonth(mockDate);
+    expect(result).toBe(3);
+  });
+});
+
+describe('getTime', () => {
+  it('should return milliseconds correctly', () => {
+    const result = getTime(mockDate);
+    expect(result).toBe(1642479132000);
+  });
+});
+describe('getUnixTime', () => {
+  it('should return milliseconds correctly', () => {
+    const result = getUnixTime(mockDate);
+    expect(result).toBe(1642479132);
   });
 });

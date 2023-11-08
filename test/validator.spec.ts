@@ -1,4 +1,4 @@
-import { isAfter, isBefore, isDate, isEqual } from '@src/core/validator';
+import { isAfter, isBefore, isDate, isSame, isLeap } from '@src/core/validator';
 const mockDate = new Date('2022-1-18 12:12:12'); // 星期二
 const mockTimestamp = 1699264217000; // 2023-11-06T17:50:17+08:00
 describe('isDate', () => {
@@ -17,17 +17,17 @@ describe('isDate', () => {
   });
 });
 
-describe('isEqual', () => {
+describe('isSame', () => {
   it('valid date, should return date1 equals date2 correctly', () => {
     const date1 = new Date('2022-01-01 12:00:00');
     const date2 = new Date('2022-01-01 12:00:00');
-    const result = isEqual(date1, date2);
+    const result = isSame(date1, date2);
     expect(result).toBe(true);
   });
-  it('valid dates, data1 should isEqual date2', () => {
+  it('valid dates, data1 should isSame date2', () => {
     const date1 = new Date('2022-01-01 12:00:00');
     const date2 = '2022-01-01 12:00:00';
-    const result = isEqual(date1, date2);
+    const result = isSame(date1, date2);
     expect(result).toBe(true);
   });
 });
@@ -42,5 +42,18 @@ describe('isAfter', () => {
   it('valid date, first should be after second', () => {
     const result = isAfter(mockTimestamp, mockDate);
     expect(result).toBeTruthy();
+  });
+});
+
+describe('isLeap', () => {
+  it('judge input year is leap', () => {
+    const year1 = 1996;
+    const year2 = 2001;
+    const year3 = 2100;
+    const year4 = 2400;
+    expect(isLeap(year1)).toBeTruthy();
+    expect(isLeap(year2)).toBeFalsy();
+    expect(isLeap(year3)).toBeFalsy();
+    expect(isLeap(year4)).toBeTruthy();
   });
 });
