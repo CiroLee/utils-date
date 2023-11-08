@@ -1,12 +1,12 @@
 # utils-date
 
-tiny and useful functions about date for frontend, written in typescript
+使用`typescript`为前端打造的轻量实用的日期工具函数
 
 [![codecov](https://codecov.io/gh/cirolee/utils-date/branch/main/graph/badge.svg)](https://codecov.io/gh/cirolee/utils-date/branch/main) ![npm bundle size](https://img.shields.io/bundlephobia/min/utils-date) ![GitHub](https://img.shields.io/github/license/cirolee/utils-date)
 
-English | [简体中文](./README-ZH.md)
+[English](./README.md) | 简体中文
 
-# install
+# 安装
 
 ```shell
 # npm
@@ -17,7 +17,7 @@ yarn add utils-date
 pnpm add utils-date
 ```
 
-# usage
+# 使用
 
 ```ts
 import { format } from 'utils-date';
@@ -74,8 +74,7 @@ interface DateObject {
 
 ## format
 
-Format date. Default format is `yyyy-mm-dd hh:mm:ss`, the default date is zero-padded, if you don't need zero-padded display, please refer to `DateFormatOption` configuration.
-
+格式化日期。默认格式为`yyyy-mm-dd hh:mm:ss`，默认日期补零，如果不需要补零显示，请参考`DateFormatOption`配置。  
 signature:
 
 ```ts
@@ -99,19 +98,19 @@ format(new Date(1642479132000), {
 
 ## Week
 
-Static class of the week.
+获取星期的静态类。
 
 signature:
 
 ```ts
 class Week {
-  // Get the week index of the specified date, default is for current date.
+  // 获取指定日期的星期索引，省略参数则获取当前日期的星期索引
   static index(date?: Time): number;
-  // Get the Chinese week name of the specified date, default is for current date.
+  // 获取指定日期的中文星期名称，省略参数则获取当前日期的中文星期名称
   static zh(date?: Time): string;
-  // Get the English week name of the specified date, default is for current date.
+  // 获取指定日期的英文星期名称，省略参数则获取当前日期的英文星期名称
   static en(date?: Time): string;
-  // Get the abbreviation of the specified date, default is for current date.
+  // 获取指定日期的英文星期名称简写，省略参数则获取当前日期的英文星期简写
   static abbr(date?: Time): string;
 }
 ```
@@ -119,7 +118,7 @@ class Week {
 example:
 
 ```ts
-// if current date is 2023-11-8 12:12:12
+// 假设当前日期为2023-11-8 12:12:12
 Week.index(); // 2
 Week.zh('2023-11-7 12:12:12'); // 二
 Week.en('2023-11-8 12:12:12'); // Tuesday
@@ -130,7 +129,7 @@ Week.abbr('2023-11-8'); // Tue.
 
 ## offset
 
-Date Offset. Equivalent to adding or subtracting dates. Supports offset calculation for year, month, day, week, hour, minute, second, millisecond.
+日期偏移。等价于对日期进行加减操作。支持对年、月、日、周、时、分、秒、毫秒进行偏移计算。
 
 signature:
 
@@ -150,7 +149,7 @@ offset(date, -3, 'day'); // 2023-04-27T16:00:00.000Z
 
 ## min
 
-Calculates the minimum value in an array of dates.  
+计算日期数组中的最小值。  
 signature:
 
 ```ts
@@ -168,7 +167,7 @@ min(dates); // 2021-12-31T12:12:12.000Z
 
 ## max
 
-Calculates the maximum value in an array of dates.
+计算日期数组中的最大值。
 
 signature:
 
@@ -187,7 +186,7 @@ max(dates); // 2022-01-01T14:12:12.000Z
 
 ## diff
 
-Calculates the difference between two dates. Supports calculating the difference in units of year, month, day, week, hour, minute, second, and millisecond.
+计算两个日期之间的差值。支持计算年、月、日、周、时、分、秒、毫秒为单位的差值。
 
 signature:
 
@@ -206,7 +205,7 @@ diff('2022-12-1 12:12:12', '2022-12-1 22:12:12', 'hour'); // -10
 
 ## clone
 
-Clone a date.
+克隆一个日期。
 
 signature:
 
@@ -220,7 +219,7 @@ Object.is(old, cloned); // false
 
 ## daysInMonth
 
-Calculates the number of days in the month for the specified date.
+计算指定日期月份天数。
 
 signature:
 
@@ -238,7 +237,7 @@ daysInMonth('2022-1-1 00:00:00'); // 31
 
 ## weekOfMonth
 
-Calculates the number of days in the month for the specified date.
+计算指定日期是本月的第几周。
 
 signature:
 
@@ -256,7 +255,7 @@ weekOfMonth('2023-11-8 12:12:12'); // 2
 
 ## weekOfYear
 
-Calculates what week of the year the specified date is.
+计算指定日期是本年的第几周。
 
 signature:
 
@@ -274,7 +273,7 @@ weekOfYear('2023-11-8 12:12:12'); // 45
 
 ## getTime
 
-Gets the milliseconds of the specified date.
+获取指定日期的毫秒时间戳。
 
 signature:
 
@@ -292,7 +291,7 @@ getTime('2023-11-8 12:12:12'); // 1699416732000
 
 ## getUnixTime
 
-Gets the Unix timestamp for the specified date.
+获取指定日期的Unix时间戳。
 
 signature:
 
@@ -310,7 +309,7 @@ getUnixTime('2023-11-8 12:12:12'); // 1699416732
 
 ## toDate
 
-Turns the specified time into a Date object.
+将指定时间转为Date对象。
 
 signature:
 
@@ -329,7 +328,7 @@ toDate(1699416732000); // 2023-11-08T12:12:12.000Z
 
 ## toObject
 
-Turns the specified time into an object.
+将指定时间转为对象。
 
 signature:
 
@@ -358,7 +357,7 @@ toObject('2023-11-8 12:12:12');
 
 ## toArray
 
-Turns the specified time into an array.
+将指定时间转为数组。
 
 signature:
 
@@ -376,7 +375,7 @@ toArray('2023-11-8 12:12:12'); // [2023, 10, 8, 12, 12, 12, 0]
 
 ## isDate
 
-Determines if the specified time is a valid date. E.g. Date object, legal ISO time string, Unix timestamp, etc.
+判断指定时间是否为有效日期。 如：Date对象，合法的ISO时间字符串，Unix时间戳等。
 
 signature:
 
@@ -396,7 +395,7 @@ isDate({}); // false
 
 ## isSame
 
-Determine if two time values are equal.
+判断两个时间值是否相等。
 
 signature:
 
@@ -414,7 +413,7 @@ isSame('2022-1-1 12:12:12', new Date('2022-1-1 12:12:12')); // true
 
 ## isBefore
 
-if the first date precedes the second date.
+判断第一个日期是否在第二个日期之前。
 
 signature:
 
@@ -432,7 +431,7 @@ isBefore('2022-1-1 12:12:12', '2022-1-3 12:12:12'); // true
 
 ## isAfter
 
-if the first date is after the second date.
+判断第一个日期是否在第二个日期之后。
 
 signature:
 
@@ -450,7 +449,7 @@ isAfter('2022-1-1 12:12:12', '2022-1-3 12:12:12'); // false
 
 ## isLeap
 
-Determines whether the specified year is a leap year.
+判断指定年份是否为闰年。
 
 signature:
 

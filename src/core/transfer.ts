@@ -19,6 +19,9 @@ export function toDate(date: Time): Date {
   if (getType(date) === 'date') {
     return date as Date;
   }
+  if (typeof date === 'string') {
+    return new Date(date.replaceAll('/', '-'));
+  }
   return new Date(date);
 }
 

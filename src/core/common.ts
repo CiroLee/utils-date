@@ -115,8 +115,20 @@ export function offset(date: Time, amount: number, timeUnit: TimeUnit): Date {
   if (!TimeUintMap[timeUnit]) {
     throw new Error('dateOffset: timeUnit is invalid');
   }
-  const _date = toDate(date);
-  return new Date(_date.getTime() + amount * TimeUintMap[timeUnit]);
+
+  const _date = clone(toDate(date));
+  const stack = {
+    year: (value: number) => _date.setFullYear(_date.getFullYear() + value),
+    month: (value: number) => _date.setMonth(_date.getMonth() + value),
+    day: (value: number) => _date.setDate(_date.getDate() + value),
+    week: (value: number) => _date.setDate(_date.getDate() + value * 7),
+    hour: (value: number) => _date.setHours(_date.getHours() + value),
+    minute: (value: number) => _date.setMinutes(_date.getMinutes() + value),
+    second: (value: number) => _date.setSeconds(_date.getSeconds() + value),
+    millisecond: (value: number) => _date.setMilliseconds(_date.getMilliseconds() + value),
+  };
+  stack[timeUnit](amount);
+  return _date;
 }
 /**
  * @desc return min date of the date array
@@ -169,4 +181,57 @@ export function clone(date: Date): Date {
     throw new Error('clone: date must be Date type');
   }
   return new Date(date.getTime());
+}
+/**
+ * @desc return the number of days in the specified month
+ * @param {Time} date
+ * @returns {Number}
+ */
+export function daysInMonth(date: Time): number {
+  const d = toDate(date);
+  return new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+}
+
+/**
+ * @desc return the week number of this month for the specified date
+ * @param {Time }date
+ * @returns {Number}
+ */
+export function weekOfMonth(date: Time): number {
+  const d = toDate(date);
+  const year = d.getFullYear();
+  const month = d.getMonth();
+  const first = new Date(year, month, 1);
+  const duration = (d.getTime() - first.getTime()) / TimeUintMap.day;
+  return Math.ceil(duration / 7);
+}
+/**
+ * @desc return the week number of this year for the specified date
+ * @param {Time} date
+ * @returns {Number}
+ */
+export function weekOfYear(date: Time): number {
+  const d = toDate(date);
+  const year = d.getFullYear();
+  const first = new Date(year, 0, 1);
+  const duration = (d.getTime() - first.getTime()) / TimeUintMap.day;
+  return Math.ceil(duration / 7);
+}
+
+/**
+ * @desc return the milliseconds of the specified date
+ * @param {Time} date
+ * @returns {Number}
+ */
+export function getTime(date: Time): number {
+  return toDate(date).getTime();
+}
+
+/**
+ * @desc return the unix timestamp of the specified date
+ * @param {Time} date
+ * @returns {Number}
+ */
+export function getUnixTime(date: Time): number {
+  return parseInt(getTime(date) / 1000 + '', 10);
 }
