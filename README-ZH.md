@@ -55,7 +55,7 @@ format('2023-01-01 12:12:12', {
 
 ```ts
 type Time = Date | string | number;
-type TimeUnit = 'year' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second' | 'millisecond;
+type TimeUnit = 'year' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second' | 'millisecond';
 interface DateFormatOption {
   format?: string;
   padZero?: boolean;
@@ -120,7 +120,7 @@ example:
 ```ts
 // 假设当前日期为2023-11-8 12:12:12
 Week.index(); // 2
-Week.zh('2023-11-7 12:12:12'); // 二
+Week.zh('2023-11-8 12:12:12'); // 二
 Week.en('2023-11-8 12:12:12'); // Tuesday
 Week.abbr('2023-11-8'); // Tue.
 ```
