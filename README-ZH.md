@@ -45,6 +45,7 @@ format('2023-01-01 12:12:12', {
 - [toDate](#todate)
 - [toObject](#toobject)
 - [toArray](#toarray)
+- [toTraditionalHour](#totraditionalhour)
 - [isDate](#isdate)
 - [isSame](#issame)
 - [isBefore](#isbefore)
@@ -369,6 +370,25 @@ example:
 
 ```ts
 toArray('2023-11-8 12:12:12'); // [2023, 10, 8, 12, 12, 12, 0]
+```
+
+[⬆️ back](#api)
+
+## toTraditionalHour
+
+将标准时间小时转换为中国传统对应时辰
+
+signature:
+
+```ts
+function toTraditionalHour(hour: number): string;
+```
+
+example:
+
+```ts
+toTraditionalHour(12); // 午
+toTraditionalHour(23); // 子
 ```
 
 [⬆️ back](#api)

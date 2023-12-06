@@ -6,6 +6,7 @@
 import { DateObject, Time } from '@src/types';
 import { isDate } from './validator';
 import { getType } from '@src/utils';
+import { traditionHoursMap } from './constants';
 
 /**
  * @desc transfer a date param to Date if it is valid
@@ -52,4 +53,23 @@ export function toObject(date: Time): DateObject {
 export function toArray(date: Time): number[] {
   const dateObj = toObject(date);
   return [dateObj.year, dateObj.month, dateObj.day, dateObj.hour, dateObj.minute, dateObj.second, dateObj.millisecond];
+}
+
+/**
+ * @desc convert standard hours to Chinese traditional hours
+ * @param {Number} hour standard hour
+ * @return {String} traditional Chinese hour
+ */
+export function toTraditionalHour(hour: number): string {
+  if (typeof hour !== 'number' || hour < 0 || hour > 23 || isNaN(hour)) {
+    throw new Error('invalid hour');
+  }
+  const item = traditionHoursMap.find((s) => {
+    const condition = [
+      hour >= s.range[0][0] && hour < s.range[0][1],
+      s.range[1] ? hour >= s.range[1][0] && hour < s.range[1][1] : false,
+    ];
+    return condition.some(Boolean);
+  });
+  return item!.value;
 }

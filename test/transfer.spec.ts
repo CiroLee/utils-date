@@ -1,4 +1,4 @@
-import { toArray, toDate, toObject } from '@src/core/transfer';
+import { toArray, toDate, toObject, toTraditionalHour } from '@src/core/transfer';
 import { isSame } from '@src/core/validator';
 const mockDate = new Date('2022-1-18 12:12:12'); // 星期二
 describe('toObject', () => {
@@ -34,5 +34,18 @@ describe('toDate', () => {
   });
   it('invalid date(e.g:""), should throw error', () => {
     expect(() => toDate('' as any)).toThrow();
+  });
+});
+
+describe('toTraditionalHour', () => {
+  it('valid hour input, should convert correctly', () => {
+    const result = toTraditionalHour(12);
+    expect(result).toBe('午');
+  });
+  it('invalid hour input, should throw error', () => {
+    expect(() => toTraditionalHour(-1)).toThrow();
+    expect(() => toTraditionalHour(25)).toThrow();
+    expect(() => toTraditionalHour('1' as any)).toThrow();
+    expect(() => toTraditionalHour(NaN)).toThrow();
   });
 });
