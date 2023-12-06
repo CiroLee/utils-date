@@ -19,3 +19,57 @@ export const weekMapEn = [
   { val: 'Friday', abbr: 'Fri.' },
   { val: 'Saturday', abbr: 'Sat.' },
 ];
+
+export const traditionHoursMap = [
+  {
+    range: [
+      [23, 24],
+      [0, 1],
+    ],
+    value: '子',
+  },
+  {
+    range: [[1, 3]],
+    value: '丑',
+  },
+  {
+    range: [[3, 5]],
+    value: '寅',
+  },
+  {
+    range: [[5, 7]],
+    value: '卯',
+  },
+  {
+    range: [[7, 9]],
+    value: '辰',
+  },
+  {
+    range: [[9, 11]],
+    value: '巳',
+  },
+  {
+    range: [[11, 13]],
+    value: '午',
+  },
+  {
+    range: [[13, 15]],
+    value: '未',
+  },
+  {
+    range: [[15, 17]],
+    value: '申',
+  },
+  {
+    range: [[17, 19]],
+    value: '酉',
+  },
+  {
+    range: [[19, 21]],
+    value: '戌',
+  },
+  {
+    range: [[21, 23]],
+    value: '亥',
+  },
+];
