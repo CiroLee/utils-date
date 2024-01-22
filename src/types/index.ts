@@ -14,3 +14,4 @@ export interface DateObject {
   millisecond: number;
 }
 export type TimeUnit = keyof DateObject;
+export type WeekName = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';

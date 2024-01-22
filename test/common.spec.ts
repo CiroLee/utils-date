@@ -24,6 +24,10 @@ describe('Week', () => {
     const result = Week.zh(mockDate);
     expect(result).toBe('二');
   });
+  it('should return Chinese week word width custom prefix', () => {
+    const result = Week.zh(mockDate, '周');
+    expect(result).toBe('周二');
+  });
   it('should return English week word', () => {
     const result = Week.en(mockDate);
     expect(result).toBe('Tuesday');
@@ -44,6 +48,21 @@ describe('Week', () => {
     expect(() => Week.zh(d)).toThrow();
     expect(() => Week.en(d)).toThrow();
     expect(() => Week.abbr(d)).toThrow();
+  });
+  it('isWorkDay, should return correctly width valid date', () => {
+    const result = Week.isWorkDay(mockDate);
+    expect(result).toBeTruthy();
+  });
+  it('isWeek test', () => {
+    expect(Week.isWeek(mockDate, 'Tuesday')).toBeTruthy();
+  });
+  it('isWeekEnd, input date is weekend, should return true', () => {
+    const result = Week.isWeekEnd(offset(mockDate, 4, 'day'));
+    expect(result).toBeTruthy();
+  });
+  it('isWeekEnd, input data is not weekend, should return false', () => {
+    const result = Week.isWeekEnd(mockDate);
+    expect(result).toBeFalsy();
   });
 });
 

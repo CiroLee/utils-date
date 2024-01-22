@@ -2,14 +2,14 @@
  * common module
  * common operations about date
  */
-import { DateFormatOption, Time, TimeUnit } from '@src/types';
+import { DateFormatOption, Time, TimeUnit, WeekName } from '@src/types';
 import { getType, zeroFill } from '@src/utils';
 import { toDate } from './transfer';
-import { TimeUintMap, weekMapEn, weekMapZh } from './constants';
+import { TimeUintMap, weekMapEn, weekMapZh, weekIndex } from './constants';
 import { isDate } from './validator';
 
 /**
- * @desc static class of week
+ * @description static class of week
  * @method index return the week index for the specified date
  * @method zh return the Chinese week word for the specified date
  * @method en return the English week word for the specified date
@@ -23,7 +23,7 @@ export class Week {
     return date ? new Date(date) : new Date();
   }
   /**
-   * @desc return the week index of the date, default is current Time
+   * @description return the week index of the date, default is current Time
    * @param {Time} [date]
    * @returns {Number}
    */
@@ -32,16 +32,16 @@ export class Week {
     return _date.getDay();
   }
   /**
-   * @desc return the Chinese week word of the date, default is current Time
+   * @description return the Chinese week word of the date, default is current Time
    * @param {Time} [date]
    * @returns {String}
    */
-  static zh(date?: Time): string {
+  static zh(date?: Time, prefix = ''): string {
     const _date = Week.check('zh', date);
-    return weekMapZh[_date.getDay()];
+    return prefix + weekMapZh[_date.getDay()];
   }
   /**
-   * @desc return the English week word of the date, default is current Time
+   * @description return the English week word of the date, default is current Time
    * @param {Time} [date]
    * @returns {String}
    */
@@ -50,7 +50,7 @@ export class Week {
     return weekMapEn[_date.getDay()].val;
   }
   /**
-   * @desc return the English week abbreviation of the date, default is current Time
+   * @description return the English week abbreviation of the date, default is current Time
    * @param {Time} [date]
    * @returns {String}
    */
@@ -58,10 +58,36 @@ export class Week {
     const _date = Week.check('abbr', date);
     return weekMapEn[_date.getDay()].abbr;
   }
+  /**
+   * @description whether the given date is workday(between Monday and Friday)
+   * @param {Time} date given date, default is current
+   * @returns {Boolean}
+   */
+  static isWorkDay(date?: Time): boolean {
+    const index = Week.index(date);
+    return index >= 1 && index <= 5;
+  }
+  /**
+   * @description whether the given date is weekend(Sunday or Saturday)
+   * @param {Time} date given date, default is current
+   * @returns {Boolean}
+   */
+  static isWeekEnd(date?: Time): boolean {
+    return !Week.isWorkDay(date);
+  }
+  /**
+   * @description whether the given date is the same week as weekName
+   * @param {Time} date
+   * @param {WeekName} weekName target week name
+   * @returns {Boolean}
+   */
+  static isWeek(date: Time, weekName: WeekName): boolean {
+    return Week.index(date) === weekIndex[weekName];
+  }
 }
 
 /**
- * @desc format date default format is yyyy-mm-dd HH:MM:SS, unix timestamp needs to be accurate to milliseconds
+ * @description format date default format is yyyy-mm-dd HH:MM:SS, unix timestamp needs to be accurate to milliseconds
  * @param  {Time} date
  * @param  {string | DateFormatOption} [option] config option
  */
@@ -103,7 +129,7 @@ export function format(date: Time, option?: string | DateFormatOption): string {
 }
 
 /**
- * @desc return an offset date. support offsetting year, month, day, week etc.
+ * @description return an offset date. support offsetting year, month, day, week etc.
  * @param {Time} date
  * @param {Number} amount operation value, integer is added, negative is subtracted
  * @param {TimeUnit} timeUnit unit
@@ -131,7 +157,7 @@ export function offset(date: Time, amount: number, timeUnit: TimeUnit): Date {
   return _date;
 }
 /**
- * @desc return min date of the date array
+ * @description return min date of the date array
  * @param {Time[]} dates valid date array
  * @returns {Date}
  */
@@ -143,7 +169,7 @@ export function min(dates: Time[]): Date {
   return new Date(Math.min(...datesNum));
 }
 /**
- * @desc return max date of the date array
+ * @description return max date of the date array
  * @param {Time[]} dates valid date array
  * @returns {Date}
  */
@@ -156,7 +182,7 @@ export function max(dates: Time[]): Date {
 }
 
 /**
- * @desc return the diff of two dates
+ * @description return the diff of two dates
  * @param {Date} first
  * @param {Date} second
  * @param {TimeUnit} unit unit of diff,support year, month, week, day etc.
@@ -172,7 +198,7 @@ export function diff(first: Time, second: Time, unit: TimeUnit): number {
   return Number(diff / TimeUintMap[unit]);
 }
 /**
- * @desc return a cloned date
+ * @description return a cloned date
  * @param {Date} date
  * @returns {Date}
  */
@@ -183,7 +209,7 @@ export function clone(date: Date): Date {
   return new Date(date.getTime());
 }
 /**
- * @desc return the number of days in the specified month
+ * @description return the number of days in the specified month
  * @param {Time} date
  * @returns {Number}
  */
@@ -193,7 +219,7 @@ export function daysInMonth(date: Time): number {
 }
 
 /**
- * @desc return the week number of this month for the specified date
+ * @description return the week number of this month for the specified date
  * @param {Time }date
  * @returns {Number}
  */
@@ -206,7 +232,7 @@ export function weekOfMonth(date: Time): number {
   return Math.ceil(duration / 7);
 }
 /**
- * @desc return the week number of this year for the specified date
+ * @description return the week number of this year for the specified date
  * @param {Time} date
  * @returns {Number}
  */
@@ -219,7 +245,7 @@ export function weekOfYear(date: Time): number {
 }
 
 /**
- * @desc return the milliseconds of the specified date
+ * @description return the milliseconds of the specified date
  * @param {Time} date
  * @returns {Number}
  */
@@ -228,7 +254,7 @@ export function getTime(date: Time): number {
 }
 
 /**
- * @desc return the unix timestamp of the specified date
+ * @description return the unix timestamp of the specified date
  * @param {Time} date
  * @returns {Number}
  */

@@ -1,4 +1,4 @@
-import { isAfter, isBefore, isDate, isSame, isLeap } from '@src/core/validator';
+import { isAfter, isBefore, isDate, isSame, isLeap, isPast, isFuture, isBetween, isToday } from '@src/core/validator';
 const mockDate = new Date('2022-1-18 12:12:12'); // 星期二
 const mockTimestamp = 1699264217000; // 2023-11-06T17:50:17+08:00
 describe('isDate', () => {
@@ -55,5 +55,49 @@ describe('isLeap', () => {
     expect(isLeap(year2)).toBeFalsy();
     expect(isLeap(year3)).toBeFalsy();
     expect(isLeap(year4)).toBeTruthy();
+  });
+});
+
+describe('isPast and isFuture test', () => {
+  it('given date is in the past, should return true', () => {
+    const result = isPast(mockDate);
+    expect(result).toBeTruthy();
+  });
+  it('given date is in the future, should return true', () => {
+    const result = isFuture('2999-12-31');
+    expect(result).toBeTruthy();
+  });
+});
+
+describe('isBetween test', () => {
+  it('given date is between start date and end date', () => {
+    const result = isBetween(mockDate, '2022-01-01', '2022-12-31');
+    expect(result).toBeTruthy();
+  });
+});
+
+describe('isToday test', () => {
+  const RealDate = Date;
+  function mockDate(isoDate: string): void {
+    global.Date = class extends Date {
+      constructor(...args: ConstructorParameters<typeof Date>) {
+        super(...args);
+      }
+      static now(): number {
+        return new Date(isoDate).getTime();
+      }
+    } as typeof Date;
+  }
+  afterEach(() => {
+    global.Date = RealDate;
+  });
+  it('should return true if the date is today', () => {
+    mockDate('2024-01-22T00:00:00Z');
+    expect(isToday(new Date())).toBe(true);
+  });
+  it('should return false if the date is not today', () => {
+    mockDate('2024-01-22T00:00:00Z');
+    const tomorrow = new Date('2024-01-23T00:00:00Z');
+    expect(isToday(tomorrow)).toBe(false);
   });
 });

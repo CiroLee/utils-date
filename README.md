@@ -6,7 +6,7 @@ tiny and useful functions about date for frontend, written in typescript
 
 English | [简体中文](./README-ZH.md)
 
-# install
+## install
 
 ```shell
 # npm
@@ -17,7 +17,7 @@ yarn add utils-date
 pnpm add utils-date
 ```
 
-# usage
+## usage
 
 ```ts
 import { format } from 'utils-date';
@@ -28,7 +28,7 @@ format('2023-01-01 12:12:12', {
 // 2023/1/1
 ```
 
-# API
+## API
 
 - [format](#format)
 - [Week](#week)
@@ -51,12 +51,17 @@ format('2023-01-01 12:12:12', {
 - [isBefore](#isbefore)
 - [isAfter](#isafter)
 - [isLeap](#isleap)
+- [isPast](#ispast)
+- [isFuture](#isfuture)
+- [isToday](#istoday)
+- [isBetween](#isbetween)
 
-# types
+## types
 
 ```ts
 type Time = Date | string | number;
 type TimeUnit = 'year' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second' | 'millisecond';
+type WeekName = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
 interface DateFormatOption {
   format?: string;
   padZero?: boolean;
@@ -109,11 +114,17 @@ class Week {
   // Get the week index of the specified date, default is for current date.
   static index(date?: Time): number;
   // Get the Chinese week name of the specified date, default is for current date.
-  static zh(date?: Time): string;
+  static zh(date?: Time, prefix?: string): string;
   // Get the English week name of the specified date, default is for current date.
   static en(date?: Time): string;
   // Get the abbreviation of the specified date, default is for current date.
   static abbr(date?: Time): string;
+  // whether the given date is workday(between Monday and Friday)
+  static isWorkDay(date?: Time): boolean;
+  // whether the given date is weekend(Sunday or Saturday)
+  static isWeekend(date?: Time): boolean;
+  // whether the given date is the same week as weekName
+  static isWeek(date: Time, weekName: WeekName): boolean;
 }
 ```
 
@@ -123,8 +134,12 @@ example:
 // if current date is 2023-11-8 12:12:12
 Week.index(); // 2
 Week.zh('2023-11-8 12:12:12'); // 二
+Week.zh('2023-11-8 12:12:12', '周'); // 周二
 Week.en('2023-11-8 12:12:12'); // Tuesday
 Week.abbr('2023-11-8'); // Tue.
+Week.isWorkDay(); // true
+Week.isWeekend(); // false
+Week.isWeek('2023-11-8', 'Tuesday'); // true
 ```
 
 [⬆️ back](#api)
@@ -482,6 +497,79 @@ example:
 
 ```ts
 isLeap(2000); // true
+```
+
+[⬆️ back](#api)
+
+## isPast
+
+Determines if the specified time is in the past(compared to now).
+
+signature:
+
+```ts
+function isPast(date: Time): boolean;
+```
+
+example:
+
+```ts
+isPast(new Date('1990-1-1 12:12:12')); // true
+```
+
+[⬆️ back](#api)
+
+## isFuture
+
+Determines if the specified time is in the future(compared to now).
+
+signature:
+
+```ts
+function isFuture(date: Time): boolean;
+```
+
+example:
+
+```ts
+isFuture(new Date('2999-1-1 12:12:12')); // true
+```
+
+[⬆️ back](#api)
+
+## isToday
+
+Determines if the specified time is today.
+
+signature:
+
+```ts
+function isToday(date: Time): boolean;
+```
+
+example:
+
+```ts
+const date = new Date('1900-01-23T00:00:00Z');
+isToday(date); // false
+```
+
+[⬆️ back](#api)
+
+## isBetween
+
+Determines if the specified time is between the start date and end date.
+
+signature:
+
+```ts
+function isBetween(date: Time, start: Time, end: Time): boolean;
+```
+
+example:
+
+```ts
+isBetween(new Date('2022-1-18 12:12:12'), '2022-01-01', '2022-12-31'); // true
 ```
 
 [⬆️ back](#api)
