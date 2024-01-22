@@ -9,7 +9,7 @@ import { getType } from '@src/utils';
 import { traditionHoursMap } from './constants';
 
 /**
- * @desc transfer a date param to Date if it is valid
+ * @description transfer a date param to Date if it is valid
  * @param {Time} date
  * @returns {Date}
  */
@@ -27,7 +27,7 @@ export function toDate(date: Time): Date {
 }
 
 /**
- * @desc convert an date to object
+ * @description convert an date to object
  * @param {Time} date
  * @returns {DateObject}
  */
@@ -46,7 +46,7 @@ export function toObject(date: Time): DateObject {
 }
 
 /**
- * @desc convert date to an array
+ * @description convert date to an array
  * @param {Time} date
  * @returns {Number[]}
  */
@@ -56,7 +56,7 @@ export function toArray(date: Time): number[] {
 }
 
 /**
- * @desc convert standard hours to Chinese traditional hours
+ * @description convert standard hours to Chinese traditional hours
  * @param {Number} hour standard hour
  * @return {String} traditional Chinese hour
  */

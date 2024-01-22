@@ -9,6 +9,15 @@ export const TimeUintMap = {
   year: 1000 * 60 * 60 * 24 * 365,
 };
 
+export const weekIndex = {
+  Sunday: 0,
+  Monday: 1,
+  Tuesday: 2,
+  Wednesday: 3,
+  Thursday: 4,
+  Friday: 5,
+  Saturday: 6,
+} as const;
 export const weekMapZh = ['日', ' 一', '二', '三', '四', '五', '六'];
 export const weekMapEn = [
   { val: 'Sunday', abbr: 'Sun.' },

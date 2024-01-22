@@ -51,11 +51,16 @@ format('2023-01-01 12:12:12', {
 - [isBefore](#isbefore)
 - [isAfter](#isafter)
 - [isLeap](#isleap)
+- [isPast](#ispast)
+- [isFuture](#isfuture)
+- [isToday](#istoday)
+- [isBetween](#isbetween)
 
 # types
 
 ```ts
 type Time = Date | string | number;
+type WeekName = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
 type TimeUnit = 'year' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second' | 'millisecond';
 interface DateFormatOption {
   format?: string;
@@ -113,6 +118,12 @@ class Week {
   static en(date?: Time): string;
   // 获取指定日期的英文星期名称简写，省略参数则获取当前日期的英文星期简写
   static abbr(date?: Time): string;
+  // 指定的日期是否为工作日(周一到周五)
+  static isWorkDay(date?: Time): boolean;
+  // 指定的日期是否为周末
+  static isWeekend(date?: Time): boolean;
+  // 指定的日期是否为指定的星期
+  static isWeek(date: Time, weekName: WeekName): boolean;
 }
 ```
 
@@ -122,6 +133,7 @@ example:
 // 假设当前日期为2023-11-8 12:12:12
 Week.index(); // 2
 Week.zh('2023-11-8 12:12:12'); // 二
+Week.zh('2023-11-8 12:12:12', '周'); // 周二
 Week.en('2023-11-8 12:12:12'); // Tuesday
 Week.abbr('2023-11-8'); // Tue.
 ```
@@ -481,6 +493,77 @@ example:
 
 ```ts
 isLeap(2000); // true
+```
+
+[⬆️ back](#api)
+
+## isPast
+
+指定的日期是否已经过去(和当前时间比较)。signature:
+
+```ts
+function isPast(date: Time): boolean;
+```
+
+example:
+
+```ts
+isPast(new Date('1990-1-1 12:12:12')); // true
+```
+
+[⬆️ back](#api)
+
+## isFuture
+
+指定的日期是否在将来(和当前时间比较)。
+
+signature:
+
+```ts
+function isFuture(date: Time): boolean;
+```
+
+example:
+
+```ts
+isFuture(new Date('2999-1-1 12:12:12')); // true
+```
+
+[⬆️ back](#api)
+
+## isToday
+
+判断指定日期是否为今天。
+
+signature:
+
+```ts
+function isToday(date: Time): boolean;
+```
+
+example:
+
+```ts
+const date = new Date('1900-01-23T00:00:00Z');
+isToday(date); // false
+```
+
+[⬆️ back](#api)
+
+## isBetween
+
+指定的时间是否在start和end时间之间。
+
+signature:
+
+```ts
+function isBetween(date: Time, start: Time, end: Time): boolean;
+```
+
+example:
+
+```ts
+isBetween(new Date('2022-1-18 12:12:12'), '2022-01-01', '2022-12-31'); // true
 ```
 
 [⬆️ back](#api)
