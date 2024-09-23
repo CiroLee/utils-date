@@ -37,7 +37,9 @@ format('2023-01-01 12:12:12', {
 - [max](#max)
 - [diff](#diff)
 - [clone](#clone)
+- [set](#set)
 - [daysInMonth](#daysinmonth)
+- [daysOfYear](#daysofyear)
 - [weekOfMonth](#weekofmonth)
 - [weekOfYear](#weekofyear)
 - [getTime](#gettime)
@@ -80,7 +82,7 @@ interface DateObject {
 
 ## format
 
-格式化日期。默认格式为`yyyy-mm-dd hh:mm:ss`，默认日期补零，如果不需要补零显示，请参考`DateFormatOption`配置。  
+格式化日期默认格式为`yyyy-mm-dd hh:mm:ss`，默认日期补零，如果不需要补零显示，请参考`DateFormatOption`配置  
 signature:
 
 ```ts
@@ -104,7 +106,7 @@ format(new Date(1642479132000), {
 
 ## Week
 
-获取星期的静态类。
+获取星期的静态类
 
 signature:
 
@@ -142,7 +144,7 @@ Week.abbr('2023-11-8'); // Tue.
 
 ## offset
 
-日期偏移。等价于对日期进行加减操作。支持对年、月、日、周、时、分、秒、毫秒进行偏移计算。
+日期偏移等价于对日期进行加减操作支持对年、月、日、周、时、分、秒、毫秒进行偏移计算
 
 signature:
 
@@ -162,7 +164,7 @@ offset(date, -3, 'day'); // 2023-04-27T16:00:00.000Z
 
 ## min
 
-计算日期数组中的最小值。  
+计算日期数组中的最小值  
 signature:
 
 ```ts
@@ -180,7 +182,7 @@ min(dates); // 2021-12-31T12:12:12.000Z
 
 ## max
 
-计算日期数组中的最大值。
+计算日期数组中的最大值
 
 signature:
 
@@ -199,7 +201,7 @@ max(dates); // 2022-01-01T14:12:12.000Z
 
 ## diff
 
-计算两个日期之间的差值。支持计算年、月、日、周、时、分、秒、毫秒为单位的差值。
+计算两个日期之间的差值支持计算年、月、日、周、时、分、秒、毫秒为单位的差值
 
 signature:
 
@@ -218,7 +220,7 @@ diff('2022-12-1 12:12:12', '2022-12-1 22:12:12', 'hour'); // -10
 
 ## clone
 
-克隆一个日期。
+克隆一个日期
 
 signature:
 
@@ -230,9 +232,28 @@ Object.is(old, cloned); // false
 
 [⬆️ back](#api)
 
+## set
+
+返回已应用更改的新日期，设置utc:true, 使用对应UTC方法
+
+signature:
+
+```ts
+function set(date: Time, options: SetOptions): Date;
+
+// setOptions
+interface SetOptions {
+  unit: Exclude<TimeUnit, 'week'>;
+  value: number;
+  utc?: boolean;
+}
+```
+
+[⬆️ back](#api)
+
 ## daysInMonth
 
-计算指定日期月份天数。
+计算指定日期所在月份的天数
 
 signature:
 
@@ -248,9 +269,27 @@ daysInMonth('2022-1-1 00:00:00'); // 31
 
 [⬆️ back](#api)
 
+## daysOfYear
+
+计算指定日期是当年的第几天
+
+signature:
+
+```ts
+function daysOfYear(date: Time): number;
+```
+
+example:
+
+```ts
+daysOfYear('2024-9-23 16:12:34'); // 267
+```
+
+[⬆️ back](#api)
+
 ## weekOfMonth
 
-计算指定日期是本月的第几周。
+计算指定日期是本月的第几周
 
 signature:
 
@@ -268,7 +307,7 @@ weekOfMonth('2023-11-8 12:12:12'); // 2
 
 ## weekOfYear
 
-计算指定日期是本年的第几周。
+计算指定日期是本年的第几周
 
 signature:
 
@@ -286,7 +325,7 @@ weekOfYear('2023-11-8 12:12:12'); // 45
 
 ## getTime
 
-获取指定日期的毫秒时间戳。
+获取指定日期的毫秒时间戳
 
 signature:
 
@@ -304,7 +343,7 @@ getTime('2023-11-8 12:12:12'); // 1699416732000
 
 ## getUnixTime
 
-获取指定日期的Unix时间戳。
+获取指定日期的Unix时间戳
 
 signature:
 
@@ -322,7 +361,7 @@ getUnixTime('2023-11-8 12:12:12'); // 1699416732
 
 ## toDate
 
-将指定时间转为Date对象。
+将指定时间转为Date对象
 
 signature:
 
@@ -341,7 +380,7 @@ toDate(1699416732000); // 2023-11-08T12:12:12.000Z
 
 ## toObject
 
-将指定时间转为对象。
+将指定时间转为对象
 
 signature:
 
@@ -370,7 +409,7 @@ toObject('2023-11-8 12:12:12');
 
 ## toArray
 
-将指定时间转为数组。
+将指定时间转为数组
 
 signature:
 
@@ -407,7 +446,7 @@ toTraditionalHour(23); // 子
 
 ## isDate
 
-判断指定时间是否为有效日期。 如：Date对象，合法的ISO时间字符串，Unix时间戳等。
+判断指定时间是否为有效日期 如：Date对象，合法的ISO时间字符串，Unix时间戳等
 
 signature:
 
@@ -427,7 +466,7 @@ isDate({}); // false
 
 ## isSame
 
-判断两个时间值是否相等。
+判断两个时间**值**是否相等
 
 signature:
 
@@ -445,7 +484,7 @@ isSame('2022-1-1 12:12:12', new Date('2022-1-1 12:12:12')); // true
 
 ## isBefore
 
-判断第一个日期是否在第二个日期之前。
+判断第一个日期是否在第二个日期之前
 
 signature:
 
@@ -463,7 +502,7 @@ isBefore('2022-1-1 12:12:12', '2022-1-3 12:12:12'); // true
 
 ## isAfter
 
-判断第一个日期是否在第二个日期之后。
+判断第一个日期是否在第二个日期之后
 
 signature:
 
@@ -481,7 +520,7 @@ isAfter('2022-1-1 12:12:12', '2022-1-3 12:12:12'); // false
 
 ## isLeap
 
-判断指定年份是否为闰年。
+判断指定年份是否为闰年
 
 signature:
 
@@ -499,7 +538,7 @@ isLeap(2000); // true
 
 ## isPast
 
-指定的日期是否已经过去(和当前时间比较)。signature:
+指定的日期是否已经过去(和当前时间比较)signature:
 
 ```ts
 function isPast(date: Time): boolean;
@@ -515,7 +554,7 @@ isPast(new Date('1990-1-1 12:12:12')); // true
 
 ## isFuture
 
-指定的日期是否在将来(和当前时间比较)。
+指定的日期是否在将来(和当前时间比较)
 
 signature:
 
@@ -533,7 +572,7 @@ isFuture(new Date('2999-1-1 12:12:12')); // true
 
 ## isToday
 
-判断指定日期是否为今天。
+判断指定日期是否为今天
 
 signature:
 
@@ -552,7 +591,7 @@ isToday(date); // false
 
 ## isBetween
 
-指定的时间是否在start和end时间之间。
+指定的时间是否在start和end时间之间
 
 signature:
 

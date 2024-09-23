@@ -11,6 +11,7 @@ import {
   offset,
   weekOfMonth,
   weekOfYear,
+  set,
 } from '@src/core/common';
 import { isSame } from '@src/core/validator';
 import { TimeUnit } from '@src/types';
@@ -253,5 +254,38 @@ describe('getUnixTime', () => {
   it('should return milliseconds correctly', () => {
     const result = getUnixTime(mockDate);
     expect(result).toBe(1642479132);
+  });
+});
+
+describe('set text', () => {
+  it('set year, should set correctly', () => {
+    const date = set(mockDate, { unit: 'year', value: 2024 });
+    const result = isSame(date, new Date('2024-1-18 12:12:12'));
+    expect(result).toBeTruthy();
+  });
+  it('set month, should set correctly', () => {
+    const date = set(mockDate, { unit: 'month', value: 2 });
+    const result = isSame(date, new Date('2022-03-18 12:12:12'));
+    expect(result).toBeTruthy();
+  });
+  it('set day, should set correctly', () => {
+    const date = set(mockDate, { unit: 'day', value: 20 });
+    const result = isSame(date, new Date('2022-1-20 12:12:12'));
+    expect(result).toBeTruthy();
+  });
+  it('set hour, should set correctly', () => {
+    const date = set(mockDate, { unit: 'hour', value: 20 });
+    const result = isSame(date, new Date('2022-1-18 20:12:12'));
+    expect(result).toBeTruthy();
+  });
+  it('set minute, should set correctly', () => {
+    const date = set(mockDate, { unit: 'minute', value: 20 });
+    const result = isSame(date, new Date('2022-1-18 12:20:12'));
+    expect(result).toBeTruthy();
+  });
+  it('set second, should set correctly', () => {
+    const date = set(mockDate, { unit: 'second', value: 20 });
+    const result = isSame(date, new Date('2022-1-18 12:12:20'));
+    expect(result).toBeTruthy();
   });
 });

@@ -56,3 +56,18 @@ describe('zeroFill test', () => {
     expect(utils.zeroFill(param3)).toBe('10');
   });
 });
+
+describe('chooseSetFunc test', () => {
+  it('invalid unit, should throw error', () => {
+    expect(() => {
+      utils.chooseSetFunc('week');
+    }).toThrow();
+  });
+  it('valid unit, should return function name', () => {
+    const utcResult = utils.chooseSetFunc('day', true);
+    const localResult = utils.chooseSetFunc('day');
+
+    expect(utcResult).toBe('setUTCDate');
+    expect(localResult).toBe('setDate');
+  });
+});
