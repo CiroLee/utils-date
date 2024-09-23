@@ -3,7 +3,7 @@
  * common operations about date
  */
 import { DateFormatOption, Time, TimeUnit, WeekName } from '@src/types';
-import { getType, zeroFill } from '@src/utils';
+import { chooseSetFunc, getType, zeroFill } from '@src/utils';
 import { toDate } from './transfer';
 import { TimeUintMap, weekMapEn, weekMapZh, weekIndex } from './constants';
 import { isDate } from './validator';
@@ -237,11 +237,21 @@ export function weekOfMonth(date: Time): number {
  * @returns {Number}
  */
 export function weekOfYear(date: Time): number {
+  const duration = daysOfYear(date);
+  return Math.ceil(duration / 7);
+}
+
+/**
+ * @description return the day of the year the specified date
+ * @param {Time} date
+ * @returns {Number}
+ */
+export function daysOfYear(date: Time): number {
   const d = toDate(date);
   const year = d.getFullYear();
   const first = new Date(year, 0, 1);
   const duration = (d.getTime() - first.getTime()) / TimeUintMap.day;
-  return Math.ceil(duration / 7);
+  return Math.ceil(duration);
 }
 
 /**
@@ -260,4 +270,23 @@ export function getTime(date: Time): number {
  */
 export function getUnixTime(date: Time): number {
   return parseInt(getTime(date) / 1000 + '', 10);
+}
+
+interface SetOptions {
+  unit: Exclude<TimeUnit, 'week'>;
+  value: number;
+  utc?: boolean;
+}
+
+/**
+ * @description return a new date with the applied changes
+ * @param {Time} date
+ * @param {SetOptions} options
+ * @returns {Date}
+ */
+export function set(date: Time, options: SetOptions): Date {
+  const d = clone(toDate(date));
+  const setFunc = chooseSetFunc(options.unit, options.utc);
+  (d[setFunc as keyof Date] as Function)(options.value);
+  return d;
 }

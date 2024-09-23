@@ -37,7 +37,9 @@ format('2023-01-01 12:12:12', {
 - [max](#max)
 - [diff](#diff)
 - [clone](#clone)
+- [set](#set)
 - [daysInMonth](#daysinmonth)
+- [daysOfYear](#daysofyear)
 - [weekOfMonth](#weekofmonth)
 - [weekOfYear](#weekofyear)
 - [getTime](#gettime)
@@ -234,6 +236,25 @@ Object.is(old, cloned); // false
 
 [⬆️ back](#api)
 
+## set
+
+return a new date with the applied changes, set utc:true, will use UTC method.
+
+signature:
+
+```ts
+function set(date: Time, options: SetOptions): Date;
+
+// setOptions
+interface SetOptions {
+  unit: Exclude<TimeUnit, 'week'>;
+  value: number;
+  utc?: boolean;
+}
+```
+
+[⬆️ back](#api)
+
 ## daysInMonth
 
 Calculates the number of days in the month for the specified date.
@@ -252,9 +273,27 @@ daysInMonth('2022-1-1 00:00:00'); // 31
 
 [⬆️ back](#api)
 
+## daysOfYear
+
+return the day of the year the specified date
+
+signature:
+
+```ts
+function daysOfYear(date: Time): number;
+```
+
+example:
+
+```ts
+daysOfYear('2024-9-23 16:12:34'); // 267
+```
+
+[⬆️ back](#api)
+
 ## weekOfMonth
 
-Calculates the number of days in the month for the specified date.
+Calculates which week of the month the specified date is.
 
 signature:
 
